@@ -47,6 +47,9 @@ func RegisterAdminRoutes(
 		// Antigravity OAuth
 		registerAntigravityOAuthRoutes(admin, h)
 
+		// Kiro OAuth
+		registerKiroOAuthRoutes(admin, h)
+
 		// 代理管理
 		registerProxyRoutes(admin, h)
 
@@ -382,6 +385,18 @@ func registerAntigravityOAuthRoutes(admin *gin.RouterGroup, h *handler.Handlers)
 		antigravity.POST("/oauth/auth-url", h.Admin.AntigravityOAuth.GenerateAuthURL)
 		antigravity.POST("/oauth/exchange-code", h.Admin.AntigravityOAuth.ExchangeCode)
 		antigravity.POST("/oauth/refresh-token", h.Admin.AntigravityOAuth.RefreshToken)
+	}
+}
+
+func registerKiroOAuthRoutes(admin *gin.RouterGroup, h *handler.Handlers) {
+	kiro := admin.Group("/kiro")
+	{
+		kiro.POST("/oauth/device-auth", h.Admin.KiroOAuth.StartDeviceAuth)
+		kiro.POST("/oauth/social-auth", h.Admin.KiroOAuth.StartSocialAuth)
+		kiro.POST("/oauth/complete-social", h.Admin.KiroOAuth.CompleteSocialAuth)
+		kiro.GET("/oauth/session-status", h.Admin.KiroOAuth.GetSessionStatus)
+		kiro.POST("/oauth/cancel-session", h.Admin.KiroOAuth.CancelSession)
+		kiro.POST("/oauth/scan-tokens", h.Admin.KiroOAuth.ScanTokens)
 	}
 }
 

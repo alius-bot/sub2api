@@ -12,6 +12,7 @@ import (
 	"github.com/Wei-Shaw/sub2api/internal/pkg/antigravity"
 	"github.com/Wei-Shaw/sub2api/internal/pkg/claude"
 	"github.com/Wei-Shaw/sub2api/internal/pkg/geminicli"
+	"github.com/Wei-Shaw/sub2api/internal/pkg/kiro"
 )
 
 const upstreamModelsBodyLimit int64 = 8 << 20
@@ -83,6 +84,10 @@ func (s *AccountTestService) FetchUpstreamSupportedModels(ctx context.Context, a
 
 	if account.Platform == PlatformAntigravity && account.Type != AccountTypeAPIKey {
 		return s.fetchAntigravityOAuthUpstreamModels(ctx, account)
+	}
+
+	if account.IsKiro() {
+		return kiroModelIDs(), nil
 	}
 
 	if s.httpUpstream == nil {
@@ -453,6 +458,13 @@ func upstreamModelEntryID(entry upstreamModelEntry) string {
 		modelID = strings.TrimSpace(entry.Name)
 	}
 	return strings.TrimPrefix(modelID, "models/")
+}
+
+func kiroModelIDs() []string {
+	ids := make([]string, len(kiro.Models))
+	copy(ids, kiro.Models)
+	sort.Strings(ids)
+	return ids
 }
 
 func dedupeAndSortModelIDs(models []string) []string {

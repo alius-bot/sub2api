@@ -493,6 +493,10 @@ func (a *Account) resolveModelMapping(rawMapping map[string]any) map[string]stri
 		if a.Platform == domain.PlatformAntigravity {
 			return domain.DefaultAntigravityModelMapping
 		}
+		// Kiro 平台使用默认映射
+		if a.Platform == domain.PlatformKiro {
+			return domain.DefaultKiroModelMapping
+		}
 		// Bedrock 默认映射由 forwardBedrock 统一处理（需配合 region prefix 调整）
 		return nil
 	}
@@ -500,6 +504,10 @@ func (a *Account) resolveModelMapping(rawMapping map[string]any) map[string]stri
 		// Antigravity 平台使用默认映射
 		if a.Platform == domain.PlatformAntigravity {
 			return domain.DefaultAntigravityModelMapping
+		}
+		// Kiro 平台使用默认映射
+		if a.Platform == domain.PlatformKiro {
+			return domain.DefaultKiroModelMapping
 		}
 		return nil
 	}
@@ -524,6 +532,10 @@ func (a *Account) resolveModelMapping(rawMapping map[string]any) map[string]stri
 	// Antigravity 平台使用默认映射
 	if a.Platform == domain.PlatformAntigravity {
 		return domain.DefaultAntigravityModelMapping
+	}
+	// Kiro 平台使用默认映射
+	if a.Platform == domain.PlatformKiro {
+		return domain.DefaultKiroModelMapping
 	}
 	return nil
 }
@@ -1054,6 +1066,10 @@ func (a *Account) IsOpenAI() bool {
 
 func (a *Account) IsAnthropic() bool {
 	return a.Platform == PlatformAnthropic
+}
+
+func (a *Account) IsKiro() bool {
+	return a.Platform == PlatformKiro
 }
 
 func (a *Account) IsOpenAIOAuth() bool {
